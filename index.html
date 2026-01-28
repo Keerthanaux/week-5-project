@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stylish Registration Form</title>
+<style>
+    /* Body styling */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    /* Form container */
+    .container {
+        background: #fff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        width: 350px;
+        transition: 0.3s ease-in-out;
+    }
+
+    .container:hover {
+        transform: scale(1.02);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+    /* Input styling */
+    .input-group {
+        position: relative;
+        margin-bottom: 25px;
+    }
+
+    .input-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: 0.3s;
+        font-size: 16px;
+    }
+
+    .input-group input:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+
+    /* Error message styling */
+    .error {
+        color: #ff4d4d;
+        font-size: 13px;
+        margin-top: 5px;
+        display: none;
+    }
+
+    /* Success & error border colors */
+    .input-valid {
+        border-color: #4CAF50 !important;
+    }
+
+    .input-invalid {
+        border-color: #ff4d4d !important;
+    }
+
+    /* Button styling */
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:disabled {
+        background-color: #aaa;
+        cursor: not-allowed;
+    }
+
+    button:hover:not(:disabled) {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Register</h2>
+    <form id="registrationForm">
+        <div class="input-group">
+            <input type="text" id="name" placeholder="Name">
+            <div class="error" id="nameError">Name cannot be empty</div>
+        </div>
+
+        <div class="input-group">
+            <input type="email" id="email" placeholder="Email">
+            <div class="error" id="emailError">Please enter a valid email</div>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Password">
+            <div class="error" id="passwordError">Password must be at least 6 characters</div>
+        </div>
+
+        <button type="submit" id="submitBtn" disabled>Register</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('registrationForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const submitBtn = document.getElementById('submitBtn');
+
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+
+    let isNameValid = false;
+    let isEmailValid = false;
+    let isPasswordValid = false;
+
+    function validateName() {
+        if (nameInput.value.trim() === '') {
+            nameError.style.display = 'block';
+            nameInput.classList.add('input-invalid');
+            nameInput.classList.remove('input-valid');
+            isNameValid = false;
+        } else {
+            nameError.style.display = 'none';
+            nameInput.classList.add('input-valid');
+            nameInput.classList.remove('input-invalid');
+            isNameValid = true;
+        }
+    }
+
+    function validateEmail() {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value.trim())) {
+            emailError.style.display = 'block';
+            emailInput.classList.add('input-invalid');
+            emailInput.classList.remove('input-valid');
+            isEmailValid = false;
+        } else {
+            emailError.style.display = 'none';
+            emailInput.classList.add('input-valid');
+            emailInput.classList.remove('input-invalid');
+            isEmailValid = true;
+        }
+    }
+
+    function validatePassword() {
+        if (passwordInput.value.length < 6) {
+            passwordError.style.display = 'block';
+            passwordInput.classList.add('input-invalid');
+            passwordInput.classList.remove('input-valid');
+            isPasswordValid = false;
+        } else {
+            passwordError.style.display = 'none';
+            passwordInput.classList.add('input-valid');
+            passwordInput.classList.remove('input-invalid');
+            isPasswordValid = true;
+        }
+    }
+
+    function toggleSubmitButton() {
+        submitBtn.disabled = !(isNameValid && isEmailValid && isPasswordValid);
+    }
+
+    // Real-time validation
+    nameInput.addEventListener('input', () => { validateName(); toggleSubmitButton(); });
+    emailInput.addEventListener('input', () => { validateEmail(); toggleSubmitButton(); });
+    passwordInput.addEventListener('input', () => { validatePassword(); toggleSubmitButton(); });
+
+    // Form submission
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Form submitted successfully!');
+        form.reset();
+        nameInput.classList.remove('input-valid', 'input-invalid');
+        emailInput.classList.remove('input-valid', 'input-invalid');
+        passwordInput.classList.remove('input-valid', 'input-invalid');
+        submitBtn.disabled = true;
+    });
+});
+</script>
+
+</body>
+</html>
